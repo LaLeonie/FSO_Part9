@@ -13,24 +13,26 @@ interface CalcValues {
   valueB: number;
 }
 
-// const parsingArguments = (args: Array<string>): CalcValues => {
-//   //   if (args.length < 4) throw new Error("not enough argument");
-//   //   if (args.length > 4) throw new Error("too many arguments");
-//   const arguments = args.slice(2).join();
-//   const regex = /\[.*\]/;
-//   const array = arguments.match(regex)[0];
-//   console.log(Array.from(array));
-//   return {
-//     valueA: Array.from(args[2]).map((n) => Number(n)),
-//     valueB: Number(args[3]),
-//   };
-// };
+const parsingArguments = (args: Array<string>): CalcValues => {
+  const allArgsNumbers = args
+    .slice(2)
+    .map((el) => Number(el))
+    .every((el) => !isNaN(el));
+  if (allArgsNumbers) {
+    const daysArray = args.slice(3).map((el) => Number(el));
+    return {
+      valueA: daysArray,
+      valueB: Number(args[2]),
+    };
+  } else {
+    throw new Error("provided arguments are not numbers!");
+  }
+};
 
 const calculateExercises = (
   dailyHours: Array<number>,
   targetAmount: number
 ): calcResult => {
-  console.log(dailyHours, targetAmount);
   const periodLength = dailyHours.length;
   const trainingDays = dailyHours.filter((h) => h !== 0).length;
   const average = dailyHours.reduce((a, b) => a + b) / periodLength;
@@ -55,7 +57,10 @@ const calculateExercises = (
     average,
   };
 };
-const valueA = [3, 0, 2, 4.5, 0, 3, 1];
-const valueB = 2;
 
-console.log(calculateExercises(valueA, valueB));
+try {
+  const { valueA, valueB } = parsingArguments(process.argv);
+  console.log(calculateExercises(valueA, valueB));
+} catch (e) {
+  console.log("Error, something bad happened, message: ", e.message);
+}
