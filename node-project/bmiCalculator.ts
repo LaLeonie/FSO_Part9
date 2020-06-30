@@ -1,13 +1,8 @@
-type bmiResult =
-  | `Very severely underweight`
-  | `Severely underweight`
-  | `Underweight`
-  | `Normal (healthy weight)`
-  | `Overweight`
-  | `Obese Class I (Moderately obese)`
-  | `Obese Class II (Severely obese)`
-  | `Obese Class III (Very severely obese)`
-  | "there was an error";
+interface bmiResult {
+  weight: number;
+  height: number;
+  bmi: string;
+}
 
 interface BodyValues {
   value1: number;
@@ -28,27 +23,33 @@ const parseArguments = (args: Array<string>): BodyValues => {
   }
 };
 
-const bmiCalculator = (height: number, weight: number): bmiResult => {
+export const bmiCalculator = (height: number, weight: number): bmiResult => {
   const bmi = weight / Math.pow(height / 100, 2);
+  let verdict;
   if (bmi < 15) {
-    return `Very severely underweight`;
+    verdict = `Very severely underweight`;
   } else if (bmi == 15 || bmi == 16) {
-    return `Severely underweight`;
+    verdict = `Severely underweight`;
   } else if (16 < bmi && bmi <= 18.5) {
-    return `Underweight`;
+    verdict = `Underweight`;
   } else if (18.5 < bmi && bmi <= 25) {
-    return `Normal (healthy weight)`;
+    verdict = `Normal (healthy weight)`;
   } else if (25 < bmi && bmi <= 30) {
-    return `Overweight`;
+    verdict = `Overweight`;
   } else if (30 < bmi && bmi <= 35) {
-    return `Obese Class I (Moderately obese)`;
+    verdict = `Obese Class I (Moderately obese)`;
   } else if (35 < bmi && bmi <= 40) {
-    return `Obese Class II (Severely obese)`;
+    verdict = `Obese Class II (Severely obese)`;
   } else if (bmi < 40) {
-    return `Obese Class III (Very severely obese)`;
+    verdict = `Obese Class III (Very severely obese)`;
   } else {
-    return "there was an error";
+    verdict = "there was an error";
   }
+  return {
+    weight,
+    height,
+    bmi: verdict,
+  };
 };
 
 try {
@@ -57,3 +58,5 @@ try {
 } catch (e) {
   console.log("Error, something bad happened, message: ", e.message);
 }
+
+export default bmiCalculator;
