@@ -1,4 +1,4 @@
-type Result =
+type bmiResult =
   | `Very severely underweight`
   | `Severely underweight`
   | `Underweight`
@@ -28,7 +28,7 @@ const parseArguments = (args: Array<string>): BodyValues => {
   }
 };
 
-const bmiCalculator = (height: number, weight: number): Result => {
+const bmiCalculator = (height: number, weight: number): bmiResult => {
   const bmi = weight / Math.pow(height / 100, 2);
   if (bmi < 15) {
     return `Very severely underweight`;
