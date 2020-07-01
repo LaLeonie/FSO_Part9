@@ -21,16 +21,41 @@ app.get("/bmi", (req, res) => {
 
 app.post("/exercises", (req, res) => {
   const { daily_exercises, target } = req.body;
-  console.log(daily_exercises, target);
-  res.json({
-    periodLength: 7,
-    trainingDays: 4,
-    success: false,
-    rating: 1,
-    ratingDescription: "bad",
-    target: 2.5,
-    average: 1.2142857142857142,
-  });
+  if (!daily_exercises || !target) {
+    res.status(400).json({
+      error: "parameters missing",
+    });
+  } else {
+    const exArray = JSON.parse(daily_exercises);
+    const targetValue = JSON.parse(target);
+    if (
+      Array.isArray(exArray) &&
+      exArray.every((el) => !isNaN(el)) &&
+      !isNaN(targetValue)
+    ) {
+      const {
+        periodLength,
+        trainingDays,
+        success,
+        rating,
+        ratingDescription,
+        average,
+      } = exerciseCalculator(exArray, targetValue);
+      res.json({
+        periodLength,
+        trainingDays,
+        success,
+        rating,
+        ratingDescription,
+        target,
+        average,
+      });
+    } else {
+      res.status(400).json({
+        error: "malformatted parameters",
+      });
+    }
+  }
 });
 const PORT = 3002;
 
