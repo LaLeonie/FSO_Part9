@@ -1,5 +1,6 @@
 import patientsData from "../../data/patients.json";
-import { PatientEntry } from "../types";
+import { PatientEntry, NewPatientEntry } from "../types";
+import idGenerator from "../utilities/idGenerator";
 
 const patients: Array<PatientEntry> = patientsData as Array<PatientEntry>;
 
@@ -17,4 +18,13 @@ const getNonSensitiveData = (): Omit<PatientEntry, "ssn">[] => {
   }));
 };
 
-export default { getEntries, getNonSensitiveData };
+const addEntry = (entry: NewPatientEntry): PatientEntry => {
+  const newPatientEntry = {
+    id: idGenerator(),
+    ...entry,
+  };
+  patients.push(newPatientEntry);
+  return newPatientEntry;
+};
+
+export default { getEntries, getNonSensitiveData, addEntry };
