@@ -8,7 +8,7 @@ export interface Course {
 }
 
 export interface ContentProps {
-  parts: Array<Course>;
+  parts: Array<CoursePart>;
 }
 
 interface CoursePartBase {

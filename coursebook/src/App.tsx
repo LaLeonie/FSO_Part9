@@ -2,6 +2,7 @@ import React from "react";
 import Header from "./components/Header";
 import Content from "./components/Content";
 import Total from "./components/Total";
+import Part from "./components/Part";
 import "./App.css";
 import { CoursePart } from "./types";
 
@@ -29,6 +30,7 @@ const App: React.FC = () => {
   return (
     <div>
       <Header name={courseName} />
+      <Part parts={courseParts} />
       <Content parts={courseParts} />
       <Total parts={courseParts} />
     </div>
