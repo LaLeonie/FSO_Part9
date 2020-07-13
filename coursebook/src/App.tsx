@@ -2,7 +2,6 @@ import React from "react";
 import Header from "./components/Header";
 import Content from "./components/Content";
 import Total from "./components/Total";
-import Part from "./components/Part";
 import "./App.css";
 import { CoursePart } from "./types";
 
@@ -25,12 +24,17 @@ const App: React.FC = () => {
       description: "Confusing description",
       exerciseSubmissionLink: "https://fake-exercise-submit.made-up-url.dev",
     },
+    {
+      name: "My course",
+      exerciseCount: 10,
+      description: "Course about Harry Potter",
+      rating: 5,
+    },
   ];
 
   return (
     <div>
       <Header name={courseName} />
-      <Part parts={courseParts} />
       <Content parts={courseParts} />
       <Total parts={courseParts} />
     </div>

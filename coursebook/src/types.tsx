@@ -34,4 +34,13 @@ interface CoursePartThree extends ExtendedCoursePartBase {
   exerciseSubmissionLink: string;
 }
 
-export type CoursePart = CoursePartOne | CoursePartTwo | CoursePartThree;
+interface CoursePartFour extends ExtendedCoursePartBase {
+  name: "My course";
+  rating: number;
+}
+
+export type CoursePart =
+  | CoursePartOne
+  | CoursePartTwo
+  | CoursePartThree
+  | CoursePartFour;

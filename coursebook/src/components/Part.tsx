@@ -1,7 +1,7 @@
 import React from "react";
 import { CoursePart } from "../types";
 
-const Part: React.FC<{ part: CoursePart }> = ({ parts }) => {
+const Part: React.FC<{ part: CoursePart }> = ({ part }) => {
   switch (part.name) {
     case "Fundamentals":
       return (
@@ -26,6 +26,15 @@ const Part: React.FC<{ part: CoursePart }> = ({ parts }) => {
           <p>{part.description}</p>
           <p>Exercises: {part.exerciseCount}</p>
           <a href={part.exerciseSubmissionLink}>Submit exercises here</a>
+        </>
+      );
+    case "My course":
+      return (
+        <>
+          <h2>{part.name}</h2>
+          <p>{part.description}</p>
+          <p>Exercises: {part.exerciseCount}</p>
+          <p>rating: {part.rating}</p>
         </>
       );
     default:
