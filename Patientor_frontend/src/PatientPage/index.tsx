@@ -1,7 +1,7 @@
 import React from "react";
 import { Container } from "semantic-ui-react";
 import { useParams } from "react-router-dom";
-import { useStateValue } from "../state";
+import { useStateValue, setPatient } from "../state";
 import { apiBaseUrl } from "../constants";
 import { Patient } from "../types";
 import { Icon } from "semantic-ui-react";
@@ -16,9 +16,7 @@ const PatientPage: React.FC = () => {
     console.log(patient);
     axios
       .get<Patient>(`${apiBaseUrl}/patients/${id}`)
-      .then((patient) =>
-        dispatch({ type: "SET_PATIENT", payload: patient.data })
-      )
+      .then((patient) => dispatch(setPatient(patient.data)))
       .catch((error) => console.error(error.response.data));
   }
 
