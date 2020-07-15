@@ -11,7 +11,7 @@ import axios from "axios";
 const PatientPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [{ patient }, dispatch] = useStateValue();
-
+  console.log(patient);
   if (!patient || patient.id !== id) {
     console.log(patient);
     axios
@@ -39,6 +39,21 @@ const PatientPage: React.FC = () => {
       </h2>
       <p>ssn: {patient ? patient.ssn : null} </p>
       <p>occupation: {patient ? patient.occupation : null}</p>
+      <h3>entries</h3>
+      <div>
+        {!patient
+          ? null
+          : patient.entries.map((entry) => (
+              <p>
+                {entry.date}:{entry.description}
+                <ul>
+                  {entry.diagnosisCodes
+                    ? entry.diagnosisCodes.map((code) => <li>{code}</li>)
+                    : null}
+                </ul>
+              </p>
+            ))}
+      </div>
     </Container>
   );
 };
