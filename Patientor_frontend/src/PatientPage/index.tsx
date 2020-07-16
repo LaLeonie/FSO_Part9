@@ -1,4 +1,5 @@
 import React from "react";
+import EntryDetails from "./Entry/EntryDetails";
 import { Container } from "semantic-ui-react";
 import { useParams } from "react-router-dom";
 import { useStateValue, setPatient } from "../state";
@@ -43,16 +44,7 @@ const PatientPage: React.FC = () => {
       <div>
         {!patient
           ? null
-          : patient.entries.map((entry) => (
-              <p>
-                {entry.date}:{entry.description}
-                <ul>
-                  {entry.diagnosisCodes
-                    ? entry.diagnosisCodes.map((code) => <li>{code}</li>)
-                    : null}
-                </ul>
-              </p>
-            ))}
+          : patient.entries.map((entry) => <EntryDetails entry={entry} />)}
       </div>
     </Container>
   );
