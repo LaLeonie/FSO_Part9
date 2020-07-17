@@ -1,6 +1,6 @@
 import React from "react";
 import EntryDetails from "./Entry/EntryDetails";
-import { Container } from "semantic-ui-react";
+import { Container, Card } from "semantic-ui-react";
 import { useParams } from "react-router-dom";
 import { useStateValue, setPatient } from "../state";
 import { apiBaseUrl } from "../constants";
@@ -12,13 +12,17 @@ import axios from "axios";
 const PatientPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [{ patient }, dispatch] = useStateValue();
-  console.log(patient);
   if (!patient || patient.id !== id) {
-    console.log(patient);
+    console.log(`patient with ${id}`, patient);
     axios
       .get<Patient>(`${apiBaseUrl}/patients/${id}`)
-      .then((patient) => dispatch(setPatient(patient.data)))
-      .catch((error) => console.error(error.response.data));
+      .then((patient) => {
+        console.log("patient", patient);
+        dispatch(setPatient(patient.data));
+      })
+      .catch((error) => {
+        console.error(error.response.data);
+      });
   }
 
   const setGender = (gender: string) => {
@@ -41,11 +45,11 @@ const PatientPage: React.FC = () => {
       <p>ssn: {patient ? patient.ssn : null} </p>
       <p>occupation: {patient ? patient.occupation : null}</p>
       <h3>entries</h3>
-      <div>
+      <Card.Group>
         {!patient
           ? null
           : patient.entries.map((entry) => <EntryDetails entry={entry} />)}
-      </div>
+      </Card.Group>
     </Container>
   );
 };

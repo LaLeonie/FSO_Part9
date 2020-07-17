@@ -1,28 +1,43 @@
 import React from "react";
 import { Entry } from "../../types";
-import HospitalEntry from "./HospitalEntry";
-import HealthCheckEntry from "./HealthCheckEntry";
-import OccupationalHealthcareEntry from "./OccupationalHealthcare";
-import { Container } from "semantic-ui-react";
+import HospitalEntryComponent from "./HospitalEntry";
+import HealthCheckEntryComponent from "./HealthCheckEntry";
+import OccupationalHealthcareEntryComponent from "./OccupationalHealthcare";
+import { Container, Card } from "semantic-ui-react";
 
 const EntryDetails: React.FC<{ entry: Entry }> = ({ entry }) => {
+  const style = {
+    padding: "10px",
+    backgroundColor: "#F4F4F6",
+  };
+
   let entryContent;
+
+  const assertNever = (value: never): never => {
+    throw new Error(
+      `Unhandled discriminated union member: ${JSON.stringify(value)}`
+    );
+  };
 
   switch (entry.type) {
     case "Hospital":
-      entryContent = <HospitalEntry entry={entry} />;
+      entryContent = <HospitalEntryComponent entry={entry} />;
       break;
     case "HealthCheck":
-      entryContent = <HealthCheckEntry entry={entry} />;
+      entryContent = <HealthCheckEntryComponent entry={entry} />;
       break;
     case "OccupationalHealthcare":
-      entryContent = <OccupationalHealthcareEntry entry={entry} />;
+      entryContent = <OccupationalHealthcareEntryComponent entry={entry} />;
       break;
     default:
-      return null;
+      return assertNever(entry);
   }
 
-  return <Container>{entryContent}</Container>;
+  return (
+    <Card fluid color="black" style={style}>
+      {entryContent}
+    </Card>
+  );
 };
 
 export default EntryDetails;

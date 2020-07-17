@@ -1,5 +1,4 @@
 import React from "react";
-import { Entry } from "../../types";
 import { Icon } from "semantic-ui-react";
 import { OccupationalHealthcareEntry } from "../../types";
 
@@ -10,7 +9,7 @@ const OccupationalHealthcareEntryComponent: React.FC<{
     <>
       <h2>
         {entry.date}
-        <Icon heartbeat name="heartbeat" />;
+        <Icon heartbeat name="heartbeat" />
       </h2>
       {entry.description}
       <p>name: {entry.employerName}</p>

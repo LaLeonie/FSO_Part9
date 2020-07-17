@@ -1,9 +1,10 @@
 import React from "react";
-import { Entry } from "../../types";
 import { Icon } from "semantic-ui-react";
 import { HealthCheckEntry } from "../../types";
 
-const HealtCheckEntry: React.FC<{ entry: HealthCheckEntry }> = ({ entry }) => {
+const HealtCheckEntryComponent: React.FC<{ entry: HealthCheckEntry }> = ({
+  entry,
+}) => {
   let healthCheckSymbol;
 
   switch (entry.healthCheckRating) {
@@ -26,12 +27,13 @@ const HealtCheckEntry: React.FC<{ entry: HealthCheckEntry }> = ({ entry }) => {
   return (
     <>
       <h2>
-        {entry.date} <Icon user doctor name="user doctor" />;
+        {entry.date}
+        <Icon user doctor name="user doctor" />
       </h2>
-      {entry.description}
-      {healthCheckSymbol}
+      <p>{entry.description}</p>
+      <p>{healthCheckSymbol}</p>
     </>
   );
 };
 
-export default HealtCheckEntry;
+export default HealtCheckEntryComponent;
