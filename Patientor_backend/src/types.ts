@@ -4,16 +4,12 @@ export interface DiagnoseEntry {
   latin?: string;
 }
 
-interface ErrorNotification {
-  message: string;
-}
-
-interface DischargeEntry {
+export interface DischargeEntry {
   date: string;
   criteria: string;
 }
 
-interface SickLeaveEntry {
+export interface SickLeaveEntry {
   startDate: string;
   endDate: string;
 }
@@ -23,6 +19,12 @@ export enum HealthCheckRating {
   "LowRisk" = 1,
   "HighRisk" = 2,
   "CriticalRisk" = 3,
+}
+
+export enum EntryType {
+  HealthCheck = "HealthCheck",
+  OccupationalHealthCare = "OccupationalHealthcare",
+  Hospital = "Hospital",
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -55,6 +57,15 @@ export type Entry =
   | OccupationalHealthcareEntry
   | HealthCheckEntry;
 
+export type newEntry =
+  | Omit<HospitalEntry, "id">
+  | Omit<OccupationalHealthcareEntry, "id">
+  | Omit<HealthCheckEntry, "id">;
+
+export type newBaseEntry = Omit<BaseEntry, "id">;
+
+//Patient entry --------------------
+
 export interface PatientEntry {
   id: string;
   name: string;
@@ -65,9 +76,7 @@ export interface PatientEntry {
   entries: Entry[];
 }
 
-export type NewPatientEntry = Omit<PatientEntry, "id">;
-
-export type ReturnedPatient = PatientEntry | ErrorNotification;
+export type NewPatientEntry = Omit<PatientEntry, "id" | "entries">;
 
 export enum Gender {
   Male = "male",

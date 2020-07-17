@@ -3,7 +3,8 @@ import {
   PatientEntry,
   NewPatientEntry,
   PublicPatient,
-  ReturnedPatient,
+  newEntry,
+  Entry,
 } from "../types";
 import idGenerator from "../utilities/idGenerator";
 
@@ -23,29 +24,35 @@ const getNonSensitiveData = (): Array<PublicPatient> => {
   }));
 };
 
-const getEntryById = (id: string): ReturnedPatient => {
-  const patient = patients.filter((patient) => patient.id === id);
-  if (patient[0]) {
-    return {
-      id: patient[0].id,
-      name: patient[0].name,
-      dateOfBirth: patient[0].dateOfBirth,
-      ssn: patient[0].ssn,
-      gender: patient[0].gender,
-      occupation: patient[0].occupation,
-      entries: [],
-    };
-  }
-  return { message: "No patient found with this id" };
+const getEntryById = (id: string): PatientEntry | undefined => {
+  const patient = patients.find((patient) => patient.id === id);
+  return patient;
 };
 
-const addEntry = (entry: NewPatientEntry): PatientEntry => {
+const addPatientEntry = (entry: NewPatientEntry): PatientEntry => {
   const newPatientEntry = {
     id: idGenerator(),
+    entries: [],
     ...entry,
   };
   patients.push(newPatientEntry);
   return newPatientEntry;
 };
 
-export default { getEntries, getNonSensitiveData, getEntryById, addEntry };
+const addEntry = (entry: newEntry, patient: PatientEntry): Entry => {
+  const newEntry = {
+    id: idGenerator(),
+    ...entry,
+  };
+
+  patient.entries.push(newEntry);
+  return newEntry;
+};
+
+export default {
+  getEntries,
+  getNonSensitiveData,
+  getEntryById,
+  addPatientEntry,
+  addEntry,
+};
