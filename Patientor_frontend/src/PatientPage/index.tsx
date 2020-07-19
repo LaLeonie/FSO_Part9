@@ -2,7 +2,7 @@ import React from "react";
 import EntryDetails from "./Entry/EntryDetails";
 import { Container, Card } from "semantic-ui-react";
 import { useParams } from "react-router-dom";
-import { useStateValue, setPatient } from "../state";
+import { useStateValue, setPatient, setDiagnosis } from "../state";
 import { apiBaseUrl } from "../constants";
 import { Patient } from "../types";
 import { Icon } from "semantic-ui-react";
@@ -13,7 +13,6 @@ const PatientPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [{ patient }, dispatch] = useStateValue();
   if (!patient || patient.id !== id) {
-    console.log(`patient with ${id}`, patient);
     axios
       .get<Patient>(`${apiBaseUrl}/patients/${id}`)
       .then((patient) => {
