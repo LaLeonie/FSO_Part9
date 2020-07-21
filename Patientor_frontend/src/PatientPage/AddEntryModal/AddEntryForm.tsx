@@ -28,19 +28,22 @@ const typeOptions: EntryTypeOption[] = [
 export const AddingEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
   const [{ diagnoses }, dispatch] = useStateValue();
 
-  if (!diagnoses) {
+  if (!diagnoses.length) {
     axios
       .get<Diagnosis[]>(`${apiBaseUrl}/diagnoses`)
-      .then((diagnoses) => dispatch(setDiagnoses(diagnoses.data)))
+      .then((list) => {
+        dispatch(setDiagnoses(list.data));
+      })
       .catch((error) => {
-        console.error(error.response.data);
+        console.error(error.response);
       });
   }
+
   return (
     <Formik
       initialValues={{
         date: "",
-        type: EntryType.Hospital,
+        type: "Hospital",
         specialist: "",
         description: "",
       }}

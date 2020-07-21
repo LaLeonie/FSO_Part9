@@ -21,14 +21,3 @@ const HospitalEntryComponent: React.FC<{ entry: HospitalEntry }> = ({
 };
 
 export default HospitalEntryComponent;
-
-// patient.entries.map((entry) => (
-//   <p>
-//     {entry.date}:{entry.description}
-//     <ul>
-//       {entry.diagnosisCodes
-//         ? entry.diagnosisCodes.map((code) => <li>{code}</li>)
-//         : null}
-//     </ul>
-//   </p>
-// ));

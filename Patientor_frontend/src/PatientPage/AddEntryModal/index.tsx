@@ -18,3 +18,5 @@ const AddEntryForm = ({ modalOpen, onClose, onSubmit, error }: Props) => (
     </Modal.Content>
   </Modal>
 );
+
+export default AddEntryForm;
