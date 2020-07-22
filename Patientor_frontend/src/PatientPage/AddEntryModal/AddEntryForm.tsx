@@ -5,18 +5,19 @@ import axios from "axios";
 import { useStateValue, setDiagnoses } from "../../state";
 import { apiBaseUrl } from "../../constants";
 import { Diagnosis, EntryType } from "../../types";
-import { EntryTypeOption, SelectField } from "./FormField";
+import { EntryTypeOption, NumberField, DiagnosisSelection } from "./FormField";
 
 // import {TextField, SelectField}
 
 import { Entry } from "../../types";
 import { TextField } from "../../AddPatientModal/FormField";
 
-export type EntryFormValues = Omit<Entry, "id">;
+export type EntryFormValues = Omit<Entry, "id" | "type">;
 
 interface Props {
   onSubmit: (values: EntryFormValues) => void;
   onCancel: () => void;
+  type: string;
 }
 
 const typeOptions: EntryTypeOption[] = [
@@ -25,7 +26,11 @@ const typeOptions: EntryTypeOption[] = [
   { value: EntryType.OccupationalHealthcare, label: "Occupational Healthcare" },
 ];
 
-export const AddingEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
+export const AddingEntryForm: React.FC<Props> = ({
+  onSubmit,
+  onCancel,
+  type,
+}) => {
   const [{ diagnoses }, dispatch] = useStateValue();
 
   if (!diagnoses.length) {
@@ -39,13 +44,70 @@ export const AddingEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
       });
   }
 
+  let extendedForm = (
+    <div>
+      <h3>Discharge Note</h3>
+      <Field
+        label="Discharge Date"
+        placeholder="Discharge Date"
+        name="date"
+        component={TextField}
+      />
+      <Field
+        label="Discharge Criteria"
+        placeholder="Criteria"
+        name="criteria"
+        component={TextField}
+      />
+    </div>
+  );
+  if (type === "HealthCheck") {
+    extendedForm = (
+      <div>
+        <Field
+          label="healthCheckRating"
+          name="healthCheckRating"
+          component={NumberField}
+          min={0}
+          max={3}
+        />
+      </div>
+    );
+  }
+
+  if (type === "OccupationalHealthcare") {
+    extendedForm = (
+      <div>
+        <Field
+          label="Employer name"
+          placeholder="Employer name"
+          name="name"
+          component={TextField}
+        />
+        <h3>Sick Leave Note</h3>
+        <Field
+          label="Start Date"
+          placeholder="Start Date"
+          name="start date"
+          component={TextField}
+        />
+        <Field
+          label="End Date"
+          placeholder="End Date"
+          name="end date"
+          component={TextField}
+        />
+      </div>
+    );
+  }
+
   return (
     <Formik
       initialValues={{
         date: "",
-        type: "Hospital",
         specialist: "",
         description: "",
+        employerName: "",
       }}
       onSubmit={onSubmit}
       validate={(values) => {
@@ -63,16 +125,34 @@ export const AddingEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
         return errors;
       }}
     >
-      {({ isValid, dirty }) => {
+      {({ isValid, dirty, setFieldValue, setFieldTouched }) => {
         return (
           <Form className="form ui">
+            <h1>{type} entry</h1>
+            <Field
+              label="Description"
+              placeholder="Description"
+              name="description"
+              component={TextField}
+            />
             <Field
               label="Date"
               placeholder="Date"
               name="date"
               component={TextField}
             />
-            <SelectField label="Type" name="type" options={typeOptions} />
+            <Field
+              label="Specialist"
+              placeholder="Specialist"
+              name="specialist"
+              component={TextField}
+            />
+            <DiagnosisSelection
+              setFieldValue={setFieldValue}
+              setFieldTouched={setFieldTouched}
+              diagnoses={Object.values(diagnoses)}
+            />
+            <p>{extendedForm}</p>
             <Grid>
               <Grid.Column floated="left" width={5}>
                 <Button type="button" onClick={onCancel} color="red">

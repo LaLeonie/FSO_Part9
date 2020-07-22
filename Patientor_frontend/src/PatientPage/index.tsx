@@ -17,19 +17,27 @@ const PatientPage: React.FC = () => {
   const [{ patient }, dispatch] = useStateValue();
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>();
+  const [type, setType] = useState<string>("");
+  const [showForm, setShowForm] = useState<boolean>(false);
 
   const openModal = (): void => setModalOpen(true);
 
   const closeModal = (): void => {
     setModalOpen(false);
     setError(undefined);
+    setShowForm(false);
   };
 
   const submitNewEntry = async (values: EntryFormValues) => {
+    const entryToSubmit = {
+      ...values,
+      type,
+    };
+    console.log("entry to submit", entryToSubmit);
     try {
       const { data: returnedEntry } = await axios.post<newEntry>(
         `${apiBaseUrl}/patients/${id}/entries`,
-        values
+        entryToSubmit
       );
       const entry: Entry = {
         ...returnedEntry,
@@ -38,6 +46,7 @@ const PatientPage: React.FC = () => {
       if (patient) {
         dispatch(amendPatient(entry, patient));
         closeModal();
+        setShowForm(false);
       }
     } catch (e) {
       console.error(e.response.data);
@@ -87,6 +96,10 @@ const PatientPage: React.FC = () => {
         onClose={closeModal}
         modalOpen={modalOpen}
         onSubmit={submitNewEntry}
+        setType={setType}
+        setShowForm={setShowForm}
+        showForm={showForm}
+        type={type}
       />
       <Button onClick={() => openModal()}>Add New Entry</Button>
     </Container>
