@@ -29,7 +29,7 @@ const PatientPage: React.FC = () => {
   };
 
   const submitHospitalEntry = async (values: HospitalEntryFormValues) => {
-    console.log(values);
+    console.log("discharge date", values.discharge.date);
     try {
       const { data: returnedEntry } = await axios.post<HospitalEntry>(
         `${apiBaseUrl}/patients/${id}/entries`,
