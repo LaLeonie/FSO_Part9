@@ -12,7 +12,7 @@ const HospitalEntryComponent: React.FC<{ entry: HospitalEntry }> = ({
         <Icon hospital symbol name="hospital" />
       </h2>
       {entry.description}
-      <h3>{entry.discharge}</h3>
+      <h3>Discharge</h3>
       <p>
         {entry.discharge.date}:{entry.discharge.criteria}
       </p>

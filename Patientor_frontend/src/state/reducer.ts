@@ -1,5 +1,6 @@
 import { State } from "./state";
 import { Patient, Diagnosis, Entry } from "../types";
+import { stat } from "fs";
 
 export type Action =
   | {
@@ -19,8 +20,8 @@ export type Action =
       payload: Diagnosis[];
     }
   | {
-      type: "AMEND_PATIENT";
-      payload: { patient: Patient; entry: Entry };
+      type: "ADD_ENTRY";
+      payload: Entry;
     };
 
 export const setPatientList = (list: Patient[]): Action => {
@@ -44,10 +45,10 @@ export const setPatient = (patient: Patient): Action => {
   };
 };
 
-export const amendPatient = (entry: Entry, patient: Patient): Action => {
+export const addEntry = (entry: Entry): Action => {
   return {
-    type: "AMEND_PATIENT",
-    payload: { patient, entry },
+    type: "ADD_ENTRY",
+    payload: entry,
   };
 };
 
@@ -81,20 +82,27 @@ export const reducer = (state: State, action: Action): State => {
       };
     case "SET_PATIENT":
       return {
-        ...state,
-        patient: action.payload,
+        patients: state.patients,
+        patient: { ...action.payload },
+        diagnoses: state.diagnoses,
       };
     case "SET_DIAGNOSES":
       return {
         ...state,
-        diagnoses: state.diagnoses.concat(action.payload),
+        diagnoses: {
+          ...action.payload.reduce(
+            (memo, diagnosis) => ({ ...memo, [diagnosis.code]: diagnosis }),
+            {}
+          ),
+          ...state.diagnoses,
+        },
       };
-    case "AMEND_PATIENT":
+    case "ADD_ENTRY":
       return {
         ...state,
         patient: {
-          ...action.payload.patient,
-          entries: action.payload.patient.entries.concat(action.payload.entry),
+          ...state.patient,
+          entries: state.patient.entries.concat(action.payload),
         },
       };
     default:

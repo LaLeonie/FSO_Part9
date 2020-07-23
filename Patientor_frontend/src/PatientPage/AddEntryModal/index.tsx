@@ -1,41 +1,45 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Modal, Segment, Button } from "semantic-ui-react";
-import { AddingEntryForm, EntryFormValues } from "./AddEntryForm";
+import AddHospitalEntryForm from "./AddHospitalEntryForm";
+import { Diagnosis } from "../../types";
+import { useStateValue, setDiagnoses } from "../../state";
+import { apiBaseUrl } from "../../constants";
+import { HospitalEntryFormValues } from "./AddHospitalEntryForm";
+import axios from "axios";
 
 interface Props {
   modalOpen: boolean;
   onClose: () => void;
-  onSubmit: (value: EntryFormValues) => void;
   error?: string;
   setType: (value: string) => void;
   setShowForm: (value: boolean) => void;
   showForm: boolean;
   type: string;
+  submitHospitalEntry: (value: HospitalEntryFormValues) => void;
 }
 
 const AddEntryForm = ({
   modalOpen,
   onClose,
-  onSubmit,
   error,
   setType,
   setShowForm,
   showForm,
   type,
+  submitHospitalEntry,
 }: Props) => {
-  let content;
-
   const onButtonClick = (str: string): any => {
     setType(str);
     setShowForm(true);
   };
 
+  let form = (
+    <AddHospitalEntryForm onSubmit={submitHospitalEntry} onCancel={onClose} />
+  );
+
+  let content;
   if (showForm) {
-    content = (
-      <div>
-        <AddingEntryForm onSubmit={onSubmit} onCancel={onClose} type={type} />
-      </div>
-    );
+    content = form;
   } else {
     content = (
       <div>
