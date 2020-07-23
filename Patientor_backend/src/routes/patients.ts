@@ -24,7 +24,7 @@ router.get("/:id", (req, res) => {
 });
 
 router.post("/:id/entries", (req, res) => {
-  const patient = patientServices.getEntryById(req.params.ids);
+  const patient = patientServices.getEntryById(req.params.id);
   if (patient) {
     try {
       const newEntry = toNewEntry(req.body);

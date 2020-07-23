@@ -24,6 +24,7 @@ const isString = (text: any): text is string => {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const isDate = (date: any): boolean => {
+  console.log(Boolean(Date.parse(date)));
   return Boolean(Date.parse(date));
 };
 
@@ -37,11 +38,10 @@ const isHealthCheckRating = (param: any): param is HealthCheckRating => {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const isEntryType = (entryArray: any): boolean => {
+const isEntryType = (type: any): boolean => {
   const arr = ["OccupationalHealthcare", "HealthCheck", "Hospital"];
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const filteredEntries = entryArray.filter((el: any) => arr.includes(el.type));
-  return Boolean(filteredEntries);
+  return Boolean(arr.indexOf(type) !== -1);
 };
 
 const isArrayOfStrings = (param: any[]): param is string[] => {
@@ -75,13 +75,6 @@ const parseGender = (gender: any): Gender => {
   return gender;
 };
 
-const parseEntries = (entries: any): Entry[] => {
-  if (!entries || !isEntryType(entries)) {
-    throw new Error(`incorrect or missing type`);
-  }
-  return entries;
-};
-
 const parseEntryTypes = (type: any): EntryType => {
   if (!type || !isEntryType(type)) {
     throw new Error(`incorrect or missing type`);
@@ -90,8 +83,8 @@ const parseEntryTypes = (type: any): EntryType => {
 };
 
 const parseDischarge = (obj: any): DischargeEntry => {
-  if (!obj || !isDate(obj.date) || isString(obj.criteria)) {
-    throw new Error(`incorrect or missing type`);
+  if (!obj || isDate(obj.date) || !isString(obj.criteria)) {
+    throw new Error(`incorrect or missing discharge`);
   }
   return {
     date: obj.date,
@@ -108,7 +101,7 @@ const parseHealthCheckRating = (healtCheckRating: any): HealthCheckRating => {
 
 const parseSickLeave = (obj: any): SickLeaveEntry => {
   if (!obj || !isString(obj.startDate) || isString(obj.endDate)) {
-    throw new Error(`incorrect or missing type`);
+    throw new Error(`incorrect or missing sick leave`);
   }
   return {
     startDate: obj.startDate,
@@ -120,7 +113,7 @@ const parseDiagnosesCodes = (
   diagnosisCodes: any
 ): Array<DiagnoseEntry["code"]> => {
   if (!Array.isArray(diagnosisCodes) || !isArrayOfStrings(diagnosisCodes)) {
-    throw new Error(`incorrect or missing type`);
+    throw new Error(`incorrect or missing diagnosis`);
   }
   return diagnosisCodes;
 };
@@ -153,7 +146,7 @@ const toNewBaseEntry = (obj: any): newBaseEntry => {
 export const toNewEntry = (obj: any): newEntry => {
   const baseEntry = toNewBaseEntry(obj);
   const type = parseEntryTypes(obj.type);
-
+  console.log(type, baseEntry, obj.discharge);
   switch (type) {
     case EntryType.HealthCheck:
       return {
