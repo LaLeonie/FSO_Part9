@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import EntryDetails from "./Entry/EntryDetails";
 import AddEntryForm from "./AddEntryModal";
 import { HospitalEntryFormValues } from "./AddEntryModal/AddHospitalEntryForm";
-
+import { HealthCheckEntryFormValues } from "./AddEntryModal/AddHealthCheckEntryForm";
 import { Container, Card } from "semantic-ui-react";
 import { useParams } from "react-router-dom";
 import { useStateValue, setPatient, addEntry } from "../state";
@@ -28,13 +28,15 @@ const PatientPage: React.FC = () => {
     setShowForm(false);
   };
 
-  const submitHospitalEntry = async (values: HospitalEntryFormValues) => {
-    console.log("discharge date", values.discharge.date);
+  type EntryFormValues = HospitalEntryFormValues | HealthCheckEntryFormValues;
+
+  const submitHospitalEntry = async (values: EntryFormValues) => {
     try {
-      const { data: returnedEntry } = await axios.post<HospitalEntry>(
+      const { data: returnedEntry } = await axios.post(
         `${apiBaseUrl}/patients/${id}/entries`,
         values
       );
+
       if (patient) {
         dispatch(addEntry(returnedEntry));
         closeModal();

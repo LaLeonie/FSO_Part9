@@ -1,10 +1,13 @@
 import React from "react";
 import { Modal, Segment, Button } from "semantic-ui-react";
 import AddHospitalEntryForm from "./AddHospitalEntryForm";
+// import HealthCheckEntryForm from "./AddHealthCheckEntryForm";
 import { Diagnosis } from "../../types";
 import { useStateValue, setDiagnoses } from "../../state";
 import { apiBaseUrl } from "../../constants";
 import { HospitalEntryFormValues } from "./AddHospitalEntryForm";
+import { HealthCheckEntryFormValues } from "./AddHealthCheckEntryForm";
+
 import axios from "axios";
 
 interface Props {
