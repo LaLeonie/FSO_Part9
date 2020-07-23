@@ -35,13 +35,8 @@ const PatientPage: React.FC = () => {
         `${apiBaseUrl}/patients/${id}/entries`,
         values
       );
-      const entry: HospitalEntry = {
-        ...returnedEntry,
-        id: "Test id",
-      };
-      console.log(entry);
       if (patient) {
-        dispatch(addEntry(entry));
+        dispatch(addEntry(returnedEntry));
         closeModal();
         setShowForm(false);
       }
