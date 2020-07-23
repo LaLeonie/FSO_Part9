@@ -3,6 +3,7 @@ import EntryDetails from "./Entry/EntryDetails";
 import AddEntryForm from "./AddEntryModal";
 import { HospitalEntryFormValues } from "./AddEntryModal/AddHospitalEntryForm";
 import { HealthCheckEntryFormValues } from "./AddEntryModal/AddHealthCheckEntryForm";
+import { OccupationalHealtChareFormValues } from "./AddEntryModal/AddOccupationalHealthcareForm";
 import { Container, Card } from "semantic-ui-react";
 import { useParams } from "react-router-dom";
 import { useStateValue, setPatient, addEntry } from "../state";
@@ -11,6 +12,11 @@ import { Patient, HospitalEntry } from "../types";
 import { Icon, Button } from "semantic-ui-react";
 
 import axios from "axios";
+
+export type EntryFormValues =
+  | HospitalEntryFormValues
+  | HealthCheckEntryFormValues
+  | OccupationalHealtChareFormValues;
 
 const PatientPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -28,19 +34,15 @@ const PatientPage: React.FC = () => {
     setShowForm(false);
   };
 
-  type EntryFormValues = HospitalEntryFormValues | HealthCheckEntryFormValues;
-
-  const submitHospitalEntry = async (values: EntryFormValues) => {
+  const submitEntry = async (values: EntryFormValues) => {
     try {
       const { data: returnedEntry } = await axios.post(
         `${apiBaseUrl}/patients/${id}/entries`,
         values
       );
-
       if (patient) {
         dispatch(addEntry(returnedEntry));
         closeModal();
-        setShowForm(false);
       }
     } catch (e) {
       console.error(e.response);
@@ -93,7 +95,7 @@ const PatientPage: React.FC = () => {
         setShowForm={setShowForm}
         showForm={showForm}
         type={type}
-        submitHospitalEntry={submitHospitalEntry}
+        submitEntry={submitEntry}
       />
       <Button onClick={() => openModal()}>Add New Entry</Button>
     </Container>

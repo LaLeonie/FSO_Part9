@@ -1,14 +1,9 @@
 import React from "react";
 import { Modal, Segment, Button } from "semantic-ui-react";
 import AddHospitalEntryForm from "./AddHospitalEntryForm";
-// import HealthCheckEntryForm from "./AddHealthCheckEntryForm";
-import { Diagnosis } from "../../types";
-import { useStateValue, setDiagnoses } from "../../state";
-import { apiBaseUrl } from "../../constants";
-import { HospitalEntryFormValues } from "./AddHospitalEntryForm";
-import { HealthCheckEntryFormValues } from "./AddHealthCheckEntryForm";
-
-import axios from "axios";
+import AddHealthCheckEntryForm from "./AddHealthCheckEntryForm";
+import AddOccupationalHealthcareForm from "./AddOccupationalHealthcareForm";
+import { EntryFormValues } from "../index";
 
 interface Props {
   modalOpen: boolean;
@@ -18,7 +13,7 @@ interface Props {
   setShowForm: (value: boolean) => void;
   showForm: boolean;
   type: string;
-  submitHospitalEntry: (value: HospitalEntryFormValues) => void;
+  submitEntry: (value: EntryFormValues) => void;
 }
 
 const AddEntryForm = ({
@@ -29,16 +24,29 @@ const AddEntryForm = ({
   setShowForm,
   showForm,
   type,
-  submitHospitalEntry,
+  submitEntry,
 }: Props) => {
   const onButtonClick = (str: string): any => {
     setType(str);
     setShowForm(true);
   };
 
-  let form = (
-    <AddHospitalEntryForm onSubmit={submitHospitalEntry} onCancel={onClose} />
-  );
+  let form = <AddHospitalEntryForm onSubmit={submitEntry} onCancel={onClose} />;
+
+  if (type === "HealthCheck") {
+    form = (
+      <AddHealthCheckEntryForm onSubmit={submitEntry} onCancel={onClose} />
+    );
+  }
+
+  if (type === "OccupationalHealthcare") {
+    form = (
+      <AddOccupationalHealthcareForm
+        onSubmit={submitEntry}
+        onCancel={onClose}
+      />
+    );
+  }
 
   let content;
   if (showForm) {

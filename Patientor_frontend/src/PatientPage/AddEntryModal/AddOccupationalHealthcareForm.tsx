@@ -3,16 +3,19 @@ import { useStateValue } from "../../state";
 import { Grid, Button } from "semantic-ui-react";
 import { Field, Formik, Form } from "formik";
 import { Textfield, DiagnosisSelection } from "./FormField";
-import { HospitalEntry } from "../../types";
+import { OccupationalHealthcareEntry } from "../../types";
 
-export type HospitalEntryFormValues = Omit<HospitalEntry, "id">;
+export type OccupationalHealtChareFormValues = Omit<
+  OccupationalHealthcareEntry,
+  "id"
+>;
 
-export interface HospitalEntryProps {
-  onSubmit: (values: HospitalEntryFormValues) => void;
+export interface OccupationalHealthcareProps {
+  onSubmit: (values: OccupationalHealtChareFormValues) => void;
   onCancel: () => void;
 }
 
-const AddHospitalEntryForm: React.FC<HospitalEntryProps> = ({
+const AddOccupationalHealthcareForm: React.FC<OccupationalHealthcareProps> = ({
   onSubmit,
   onCancel,
 }) => {
@@ -21,22 +24,23 @@ const AddHospitalEntryForm: React.FC<HospitalEntryProps> = ({
   return (
     <Formik
       initialValues={{
-        type: "Hospital",
+        type: "OccupationalHealthcare",
         description: "",
         date: "",
         specialist: "",
         diagnosisCodes: [],
-        discharge: {
-          date: "",
-          criteria: "",
+        employerName: "",
+        sickLeave: {
+          startDate: "",
+          endDate: "",
         },
       }}
       onSubmit={onSubmit}
       validate={(values) => {
         const requiredError = "Field is required";
         const errors: { [field: string]: string } = {};
-        if (!values.discharge) {
-          errors.discharge = requiredError;
+        if (!values.employerName) {
+          errors.employerName = requiredError;
         }
         if (!values.description) {
           errors.description = requiredError;
@@ -53,7 +57,7 @@ const AddHospitalEntryForm: React.FC<HospitalEntryProps> = ({
       {({ isValid, dirty, setFieldValue, setFieldTouched }) => {
         return (
           <Form className="form ui">
-            <h1>Hospital Entry</h1>
+            <h1>Occupational Healthcare Entry</h1>
             <Field
               label="Description"
               placeholder="Description"
@@ -77,17 +81,23 @@ const AddHospitalEntryForm: React.FC<HospitalEntryProps> = ({
               setFieldTouched={setFieldTouched}
               diagnoses={Object.values(diagnoses)}
             />
-            <h2>Discharge Notes</h2>
             <Field
-              label="Discharge Date"
-              placeholder="Discharge Date"
-              name="discharge.date"
+              label="Employer Name"
+              placeholder="YYYY-MM-DD"
+              name="employerName"
+              component={Textfield}
+            />
+            <h2>Sick Leave</h2>
+            <Field
+              label="Start Date"
+              placeholder="YYYY-MM-DD"
+              name="startDate"
               component={Textfield}
             />
             <Field
-              label="Discharge Criteria"
-              placeholder="Discharge Criteria"
-              name="discharge.criteria"
+              label="End Date"
+              placeholder="YYYY-MM-DD"
+              name="endDate"
               component={Textfield}
             />
             <Grid>
@@ -113,4 +123,4 @@ const AddHospitalEntryForm: React.FC<HospitalEntryProps> = ({
     </Formik>
   );
 };
-export default AddHospitalEntryForm;
+export default AddOccupationalHealthcareForm;
