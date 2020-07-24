@@ -91,13 +91,13 @@ const AddOccupationalHealthcareForm: React.FC<OccupationalHealthcareProps> = ({
             <Field
               label="Start Date"
               placeholder="YYYY-MM-DD"
-              name="startDate"
+              name="sickLeave.startDate"
               component={Textfield}
             />
             <Field
               label="End Date"
               placeholder="YYYY-MM-DD"
-              name="endDate"
+              name="sickLeave.endDate"
               component={Textfield}
             />
             <Grid>
