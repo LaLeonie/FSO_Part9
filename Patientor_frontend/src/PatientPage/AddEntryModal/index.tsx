@@ -3,7 +3,7 @@ import { Modal, Segment, Button } from "semantic-ui-react";
 import AddHospitalEntryForm from "./AddHospitalEntryForm";
 import AddHealthCheckEntryForm from "./AddHealthCheckEntryForm";
 import AddOccupationalHealthcareForm from "./AddOccupationalHealthcareForm";
-import { EntryFormValues } from "../index";
+import { EntryFormValues } from "../../types";
 
 interface Props {
   modalOpen: boolean;

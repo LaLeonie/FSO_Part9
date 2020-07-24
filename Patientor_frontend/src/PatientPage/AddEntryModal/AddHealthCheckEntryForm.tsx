@@ -3,9 +3,7 @@ import { useStateValue } from "../../state";
 import { Grid, Button } from "semantic-ui-react";
 import { Field, Formik, Form } from "formik";
 import { Textfield, DiagnosisSelection, NumberField } from "./FormField";
-import { HealthCheckEntry } from "../../types";
-
-export type HealthCheckEntryFormValues = Omit<HealthCheckEntry, "id">;
+import { HealthCheckEntryFormValues } from "../../types";
 
 export interface HealthCheckEntryProps {
   onSubmit: (values: HealthCheckEntryFormValues) => void;
@@ -26,7 +24,7 @@ const AddHealthCheckEntryForm: React.FC<HealthCheckEntryProps> = ({
         date: "",
         specialist: "",
         diagnosisCodes: [],
-        healthCheckRating: 0,
+        healthCheckRating: 1,
       }}
       onSubmit={onSubmit}
       validate={(values) => {

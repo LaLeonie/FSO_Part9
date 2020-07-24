@@ -3,9 +3,7 @@ import { useStateValue } from "../../state";
 import { Grid, Button } from "semantic-ui-react";
 import { Field, Formik, Form } from "formik";
 import { Textfield, DiagnosisSelection } from "./FormField";
-import { HospitalEntry } from "../../types";
-
-export type HospitalEntryFormValues = Omit<HospitalEntry, "id">;
+import { HospitalEntryFormValues } from "../../types";
 
 export interface HospitalEntryProps {
   onSubmit: (values: HospitalEntryFormValues) => void;

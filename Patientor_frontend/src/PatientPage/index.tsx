@@ -1,22 +1,14 @@
 import React, { useState } from "react";
 import EntryDetails from "./Entry/EntryDetails";
 import AddEntryForm from "./AddEntryModal";
-import { HospitalEntryFormValues } from "./AddEntryModal/AddHospitalEntryForm";
-import { HealthCheckEntryFormValues } from "./AddEntryModal/AddHealthCheckEntryForm";
-import { OccupationalHealtChareFormValues } from "./AddEntryModal/AddOccupationalHealthcareForm";
 import { Container, Card } from "semantic-ui-react";
 import { useParams } from "react-router-dom";
 import { useStateValue, setPatient, addEntry } from "../state";
 import { apiBaseUrl } from "../constants";
-import { Patient, HospitalEntry } from "../types";
+import { Patient, EntryFormValues } from "../types";
 import { Icon, Button } from "semantic-ui-react";
 
 import axios from "axios";
-
-export type EntryFormValues =
-  | HospitalEntryFormValues
-  | HealthCheckEntryFormValues
-  | OccupationalHealtChareFormValues;
 
 const PatientPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();

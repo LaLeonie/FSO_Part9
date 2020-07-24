@@ -3,12 +3,7 @@ import { useStateValue } from "../../state";
 import { Grid, Button } from "semantic-ui-react";
 import { Field, Formik, Form } from "formik";
 import { Textfield, DiagnosisSelection } from "./FormField";
-import { OccupationalHealthcareEntry } from "../../types";
-
-export type OccupationalHealtChareFormValues = Omit<
-  OccupationalHealthcareEntry,
-  "id"
->;
+import { OccupationalHealtChareFormValues } from "../../types";
 
 export interface OccupationalHealthcareProps {
   onSubmit: (values: OccupationalHealtChareFormValues) => void;
