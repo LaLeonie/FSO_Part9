@@ -100,7 +100,7 @@ const parseHealthCheckRating = (healtCheckRating: any): HealthCheckRating => {
 };
 
 const parseSickLeave = (obj: any): SickLeaveEntry => {
-  if (!obj || !isString(obj.startDate) || isString(obj.endDate)) {
+  if (!obj || !isString(obj.startDate) || !isString(obj.endDate)) {
     throw new Error(`incorrect or missing sick leave`);
   }
   return {
@@ -146,7 +146,7 @@ const toNewBaseEntry = (obj: any): newBaseEntry => {
 export const toNewEntry = (obj: any): newEntry => {
   const baseEntry = toNewBaseEntry(obj);
   const type = parseEntryTypes(obj.type);
-  console.log(type, baseEntry, obj.discharge);
+  console.log(obj);
   switch (type) {
     case EntryType.HealthCheck:
       return {
